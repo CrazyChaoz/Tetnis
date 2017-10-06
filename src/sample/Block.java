@@ -6,14 +6,14 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
 import javafx.beans.binding.IntegerBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
 import javafx.scene.Parent;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.*;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Random;
@@ -21,44 +21,73 @@ import java.util.Random;
 /**
  * Created by testuser on 01.06.2017.
  */
-public class Block extends Parent {
+public class Block extends Pane {
+    private int height;
     static final Random rnd=new Random();
+    static boolean[][]belegt=new boolean[10][22];
 
-    static int height=50;
-    static int width=50;
-    static int headRad=5;
     static IntegerProperty lives=new SimpleIntegerProperty(3);
     static IntegerProperty score=new SimpleIntegerProperty(0);
     static BooleanBinding isGameOver=lives.isEqualTo(0);
     static IntegerBinding level=score.divide(5).add(1);
 
-    public Block(Group parent) {
-        Shape cockpit = new Ellipse(width / 4, height / 2);
-        cockpit=Shape.subtract(cockpit,new Rectangle(-width / 4, 0,width / 2, height / 2));
-        cockpit.setFill(Color.LIGHTBLUE);
-        cockpit.setStroke(Color.WHITE);
-        getChildren().add(cockpit);
+    public Block(Stage stage,Pane parent) {
+        super();
+        int i=0;//rnd.nextInt(3);
+        switch (i){
+            case 0:
 
-        Shape huelle=new Ellipse(width / 2, height / 6);
-        huelle.setFill(Color.PINK);
-        getChildren().add(huelle);
+                this.getChildren().add(new Pixel(3,0).view);
+                this.getChildren().add(new Pixel(4,0).view);
+                this.getChildren().add(new Pixel(5,0).view);
+                this.getChildren().add(new Pixel(6,0).view);
+                height=1;
+                stage.show();
 
-        Shape head=new Circle(0,-height/6-headRad,headRad);
-        head.setFill(Color.GREEN);
-        getChildren().add(head);
+                break;
+            case 1:
+                Main.curr=new Pane();
+                Main.curr.getChildren().add(new Pixel(4,0).view);
+                Main.curr.getChildren().add(new Pixel(5,0).view);
+                Main.curr.getChildren().add(new Pixel(4,1).view);
+                stage.setTitle("Hello World");
+                stage.setScene(new Scene(Main.curr, Main.blocksize*10, Main.blocksize*22));
+                stage.show();
+                break;
+            case 2:
+                Main.curr=new Pane();
+                Main.curr.getChildren().add(new Pixel(4,0).view);
+                Main.curr.getChildren().add(new Pixel(4,1).view);
+                Main.curr.getChildren().add(new Pixel(5,0).view);
+                Main.curr.getChildren().add(new Pixel(5,1).view);
+                stage.setTitle("Hello World");
+                stage.setScene(new Scene(Main.curr, Main.blocksize*10, Main.blocksize*22));
+                stage.show();
+                break;
+            default:
+                System.err.println("wrong shape"+i);
+                break;
 
-        Shape ant1=new Line(0,-height/6-headRad,-1.2*headRad,-height/6-headRad-1.2*headRad);
-        ant1.setStroke(Color.GREEN);
-        getChildren().add(ant1);
+        }
 
-        Shape ant2=new Line(0,-height/6-headRad,1.2*headRad,-height/6-headRad-1.2*headRad);
-        ant2.setStroke(Color.GREEN);
-        getChildren().add(ant2);
 
-        Shape eye=new Ellipse(0,-height/6-headRad-1.5,1.5,1);
-        eye.setStroke(Color.WHITE);
-        eye.setFill(Color.RED);
-        getChildren().add(eye);
+        this.setTranslateY(-Main.blocksize*22);
+        double duration=Math.max(1,5-2*rnd.nextDouble());
+
+        Timeline movement=new Timeline();
+
+        KeyFrame target=new KeyFrame(Duration.seconds(duration), event -> {
+            //get Pixel coords
+            //add pixel coords to array
+            parent.getChildren().add(new Block(stage,parent));
+
+        },new KeyValue(this.translateYProperty(),Main.blocksize*(22-height)));
+
+        movement.getKeyFrames().add(target);
+        movement.play();
+
+        /*
+
 
         double y=Math.max(rnd.nextDouble()*600,this.height);
 
@@ -73,12 +102,11 @@ public class Block extends Parent {
 
         KeyFrame target=new KeyFrame(Duration.seconds(duration),event -> {
             //spawn new Block
-            Block.lives.set(Block.lives.get()-1);
-            parent.getChildren().remove(this);
+            Main.curr=new Block(parent);
         },new KeyValue(this.translateXProperty(),-width), new KeyValue(sinX,8*Math.PI));
-        sinX.addListener((observable, oldValue, newValue) -> {
-            setTranslateY(Math.sin(sinX.get())*height+y);
-        });
+
+        sinX.addListener((observable, oldValue, newValue) -> {setTranslateY(Math.sin(sinX.get())*height+y);});
+
         movement.getKeyFrames().add(target);
         movement.play();
 
@@ -87,6 +115,7 @@ public class Block extends Parent {
         this.setOnMousePressed(event -> {
             rip(parent,movement);
         });
+        */
     }
 
     void rip(Group parent, Timeline movement){
