@@ -1,16 +1,23 @@
 package sample;
 
-import javafx.scene.Group;
+
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 
-public class Pixel extends Group{
-    Shape view;
-    public Pixel(int colIndex,int rowIndex){
-        view=new Rectangle(32,32);
-        view.setFill(Color.LIGHTBLUE);
-        view.relocate(colIndex*Main.blocksize,rowIndex*Main.blocksize);
+public class Pixel extends Rectangle{
+    int col;
+
+    public Pixel(int colInit,int rowInit){
+        super(Main.blocksize,Main.blocksize);
+        col=colInit;
+
+        this.setFill(Color.LIGHTBLUE);
+        this.relocate(colInit*Main.blocksize,rowInit*Main.blocksize);
     }
+
+    public void move(int newCol,int newRow){
+        this.relocate(this.getLayoutX()+newCol*Main.blocksize,this.getLayoutY()+newRow*Main.blocksize);
+    }
+
 }

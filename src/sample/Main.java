@@ -2,22 +2,44 @@ package sample;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.transform.Rotate;
 import javafx.stage.Stage;
+
+import static javafx.scene.input.KeyCode.Q;
 
 public class Main extends Application {
 
-    public static Pane curr;
+
     public static final int blocksize=32;
+    public static Block curr;
     @Override
     public void start(Stage stage) throws Exception{
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"))
 
         Pane parent=new Pane();
-        parent.getChildren().add(new Block(stage,parent));
+        curr=new Block(stage,parent);
+        Scene scene=new Scene(parent, Main.blocksize*10, Main.blocksize*22);
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+            switch (key.getCode()){
+                case Q:
+                    System.err.println("Q pressed");
+                    curr.move(0);
+                    break;
+                case E:
+                    System.err.println("E pressed");
+
+                    curr.move(0);
+                    break;
+            }
+        });
+
+        parent.getChildren().add(curr);
+
 
         stage.setTitle("Hello World");
-        stage.setScene(new Scene(parent, Main.blocksize*10, Main.blocksize*22));
+        stage.setScene(scene);
         stage.show();
     }
 

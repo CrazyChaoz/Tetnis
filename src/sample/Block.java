@@ -5,64 +5,57 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.IntegerBinding;
-import javafx.beans.property.IntegerProperty;
-import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Group;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import java.util.Random;
+
 
 /**
  * Created by testuser on 01.06.2017.
  */
 public class Block extends Pane {
     private int height;
+    private int shape;
     static final Random rnd=new Random();
-    static boolean[][]belegt=new boolean[10][22];
 
-    static IntegerProperty lives=new SimpleIntegerProperty(3);
-    static IntegerProperty score=new SimpleIntegerProperty(0);
-    static BooleanBinding isGameOver=lives.isEqualTo(0);
-    static IntegerBinding level=score.divide(5).add(1);
+    //static IntegerProperty lives=new SimpleIntegerProperty(3);
+    //static IntegerProperty score=new SimpleIntegerProperty(0);
+    //static BooleanBinding isGameOver=lives.isEqualTo(0);
+    //static IntegerBinding level=score.divide(5).add(1);
+    static BooleanBinding collision=null;
 
     public Block(Stage stage,Pane parent) {
         super();
-        int i=0;//rnd.nextInt(3);
+        int i=1;//(rnd.nextInt(50)%3);
         switch (i){
             case 0:
-
-                this.getChildren().add(new Pixel(3,0).view);
-                this.getChildren().add(new Pixel(4,0).view);
-                this.getChildren().add(new Pixel(5,0).view);
-                this.getChildren().add(new Pixel(6,0).view);
-                height=1;
+                shape=0;
+                this.getChildren().add(new Pixel(3,1));
+                this.getChildren().add(new Pixel(4,1));
+                this.getChildren().add(new Pixel(5,1));
+                this.getChildren().add(new Pixel(6,1));
                 stage.show();
-
+                System.out.println(shape);
                 break;
             case 1:
-                Main.curr=new Pane();
-                Main.curr.getChildren().add(new Pixel(4,0).view);
-                Main.curr.getChildren().add(new Pixel(5,0).view);
-                Main.curr.getChildren().add(new Pixel(4,1).view);
-                stage.setTitle("Hello World");
-                stage.setScene(new Scene(Main.curr, Main.blocksize*10, Main.blocksize*22));
+                shape=1;
+                this.getChildren().add(new Pixel(4,0));
+                this.getChildren().add(new Pixel(5,0));
+                this.getChildren().add(new Pixel(4,1));
                 stage.show();
+                System.out.println(shape);
                 break;
             case 2:
-                Main.curr=new Pane();
-                Main.curr.getChildren().add(new Pixel(4,0).view);
-                Main.curr.getChildren().add(new Pixel(4,1).view);
-                Main.curr.getChildren().add(new Pixel(5,0).view);
-                Main.curr.getChildren().add(new Pixel(5,1).view);
-                stage.setTitle("Hello World");
-                stage.setScene(new Scene(Main.curr, Main.blocksize*10, Main.blocksize*22));
+                shape=99;
+                this.getChildren().add(new Pixel(4,0));
+                this.getChildren().add(new Pixel(4,1));
+                this.getChildren().add(new Pixel(5,0));
+                this.getChildren().add(new Pixel(5,1));
                 stage.show();
+                System.out.println(shape);
                 break;
             default:
                 System.err.println("wrong shape"+i);
@@ -71,51 +64,94 @@ public class Block extends Pane {
         }
 
 
-        this.setTranslateY(-Main.blocksize*22);
-        double duration=Math.max(1,5-2*rnd.nextDouble());
+        //this.setTranslateY(-Main.blocksize*18);
+        double duration=Math.max(1,6-2*rnd.nextDouble());
 
         Timeline movement=new Timeline();
 
         KeyFrame target=new KeyFrame(Duration.seconds(duration), event -> {
             //get Pixel coords
             //add pixel coords to array
-            parent.getChildren().add(new Block(stage,parent));
 
-        },new KeyValue(this.translateYProperty(),Main.blocksize*(22-height)));
+            parent.getChildren().add(Main.curr=new Block(stage,parent));
 
-        movement.getKeyFrames().add(target);
-        movement.play();
-
-        /*
-
-
-        double y=Math.max(rnd.nextDouble()*600,this.height);
-
-        this.setTranslateX(800+width);
-        this.setTranslateY(y);
-
-        DoubleProperty sinX=new SimpleDoubleProperty();
-        double duration=Math.max(3,11-level.get()*rnd.nextDouble());
-
-
-        Timeline movement=new Timeline();
-
-        KeyFrame target=new KeyFrame(Duration.seconds(duration),event -> {
-            //spawn new Block
-            Main.curr=new Block(parent);
-        },new KeyValue(this.translateXProperty(),-width), new KeyValue(sinX,8*Math.PI));
-
-        sinX.addListener((observable, oldValue, newValue) -> {setTranslateY(Math.sin(sinX.get())*height+y);});
+        },new KeyValue(this.translateYProperty(),Main.blocksize*20));
 
         movement.getKeyFrames().add(target);
         movement.play();
 
-        isGameOver.addListener((observable, oldValue, newValue) -> Block.this.rip(parent, movement));
 
-        this.setOnMousePressed(event -> {
-            rip(parent,movement);
-        });
-        */
+    }
+
+    public void move(int movement){
+
+        switch(movement){
+            case 0:
+                //drehen, + 90°
+                switch(shape){
+                    case 0:
+                        //4 pixel stab - liegend->stehend
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(0)).move(1,1);
+                        ((Pixel)this.getChildren().get(2)).move(-1,-1);
+                        ((Pixel)this.getChildren().get(3)).move(-2,-2);
+                        shape=10;
+                        break;
+                    case 1:
+                        //quadrat - 1 pixel
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(1)).move(0,1);
+                        shape=11;
+                        break;
+
+                    case 10:
+                        //4 pixel stab - stehend->liegend
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(0)).move(-1,-1);
+                        ((Pixel)this.getChildren().get(1)).move(0,0);
+                        ((Pixel)this.getChildren().get(2)).move(1,1);
+                        ((Pixel)this.getChildren().get(3)).move(2,2);
+                        shape=0;
+                        break;
+                    case 11:
+                        //quadrat - 1 pixel
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(0)).move(1,0);
+                        shape=12;
+                        break;
+                    case 12:
+                        //quadrat - 1 pixel
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(2)).move(0,-1);
+                        shape=13;
+                        break;
+                    case 13:
+                        //quadrat - 1 pixel
+                        System.out.println(shape);
+                        ((Pixel)this.getChildren().get(1)).move(0,-1);
+                        ((Pixel)this.getChildren().get(0)).move(-1,0);
+                        ((Pixel)this.getChildren().get(2)).move(0,1);
+
+
+                        shape=1;
+                        break;
+                    case 99:
+                        //quadrat - lol
+                        System.out.println("turn around  baby");
+                        break;
+                }
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+        }
+    }
+
+    void checkCollision(){
+
     }
 
     void rip(Group parent, Timeline movement){
