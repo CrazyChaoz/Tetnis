@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="msapplication-tap-highlight" content="no">
+    <title>kempFischris</title>
+    <link rel="stylesheet" media="all" href="kempFischris.css">
+</head>
+<body>
+
+<!-- Fischris-Game -->
+<div id="gameFischris_div">
+    <table id="gameFischris_table">
+        <tr>
+            <td id="gameFischris_td">
+                <div id="gameFischris_controlErklaerung">
+                    Steuerung mit Pfeiltasten oder WASD, Pfeiltaste&#8593; = Stein drehen, Leertaste = Stein fallen lassen
+                </div>
+                <div id="gameFischris_rekord" title="Rekord">Rekord: 0</div>
+                <div id="gameFischris_spielfeld" onclick="return startFischris(event)">
+                    <div id="gameFischris_spielfeldContent">
+                        Punkte: <span id="gameFischris_points">0</span>
+                        Level: <span id="gameFischris_level">1</span>
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script src="kempFischris.js"></script>
+<noscript>
+    JavaScript muss aktiviert sein!
+</noscript>
+
+</body>
+</html>
