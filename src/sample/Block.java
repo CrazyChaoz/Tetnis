@@ -80,6 +80,7 @@ public class Block extends Pane {
             @Override
             public void handle(ActionEvent event) {
                 ++iteration[0];
+
                 //check intersections --> break;
             /*
             for(Node node:this.getChildren())
