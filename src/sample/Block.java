@@ -6,6 +6,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
+import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
@@ -70,28 +72,20 @@ public class Block extends Pane {
         }
 
 
-        //this.setTranslateY(-Main.blocksize*18);
-        final int[] iteration = {0};
-        double duration = Math.max(1, 2 - 2 * rnd.nextDouble());
-
-        Timeline movement = new Timeline();
-
-        KeyFrame target = new KeyFrame(Duration.seconds(duration), new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                ++iteration[0];
-
-                //check intersections --> break;
-            /*
-            for(Node node:this.getChildren())
-                if(((Pixel)node).collided())
-                    newBlock(parent,stage);*/
-            }
-        }, new KeyValue(this.translateYProperty(), Main.blocksize));
-
-        movement.getKeyFrames().add(target);
-        movement.play();
-
+        for(int iter=0;iter<20;iter++){
+            Task<Void> sleeper = new Task<Void>() {
+                @Override
+                protected Void call() throws Exception {
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException e) {
+                    }
+                    return null;
+                }
+            };
+            sleeper.setOnSucceeded(event -> {this.move();});
+            new Thread(sleeper).start();
+        }
 
 
 
@@ -168,11 +162,7 @@ public class Block extends Pane {
         }
     }
 
-    void checkCollision(){
-
-    }
-
-    void rip(Group parent, Timeline movement){
+    public void rip(Group parent){
         System.err.println("Need impl --> End of game Screen");
         //print msg
     }
