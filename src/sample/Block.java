@@ -6,6 +6,8 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -69,23 +71,26 @@ public class Block extends Pane {
 
 
         //this.setTranslateY(-Main.blocksize*18);
-        boolean running=true;
-        while(running) {
-            double duration = Math.max(1, 2 - 2 * rnd.nextDouble());
+        final int[] iteration = {0};
+        double duration = Math.max(1, 2 - 2 * rnd.nextDouble());
 
-            Timeline movement = new Timeline();
+        Timeline movement = new Timeline();
 
-            KeyFrame target = new KeyFrame(Duration.seconds(duration), event -> {
-
+        KeyFrame target = new KeyFrame(Duration.seconds(duration), new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                ++iteration[0];
                 //check intersections --> break;
-                for(Node node:this.getChildren())
-                    if(((Pixel)node).collided())
-                        newBlock(parent,stage);
-            }, new KeyValue(this.translateYProperty(), Main.blocksize));
+            /*
+            for(Node node:this.getChildren())
+                if(((Pixel)node).collided())
+                    newBlock(parent,stage);*/
+            }
+        }, new KeyValue(this.translateYProperty(), Main.blocksize));
 
-            movement.getKeyFrames().add(target);
-            movement.play();
-        }
+        movement.getKeyFrames().add(target);
+        movement.play();
+
 
 
 
