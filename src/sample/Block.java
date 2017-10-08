@@ -1,11 +1,15 @@
 package sample;
 
 
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.binding.BooleanBinding;
+import javafx.event.EventType;
 import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -17,7 +21,7 @@ import java.util.Random;
  * Created by testuser on 01.06.2017.
  */
 public class Block extends Pane {
-    private int height;
+    private int position;
     private int shape;
     static final Random rnd=new Random();
 
@@ -65,22 +69,30 @@ public class Block extends Pane {
 
 
         //this.setTranslateY(-Main.blocksize*18);
-        double duration=Math.max(1,6-2*rnd.nextDouble());
+        boolean running=true;
+        while(running) {
+            double duration = Math.max(1, 2 - 2 * rnd.nextDouble());
 
-        Timeline movement=new Timeline();
+            Timeline movement = new Timeline();
 
-        KeyFrame target=new KeyFrame(Duration.seconds(duration), event -> {
-            //get Pixel coords
-            //add pixel coords to array
+            KeyFrame target = new KeyFrame(Duration.seconds(duration), event -> {
 
-            parent.getChildren().add(Main.curr=new Block(stage,parent));
+                //check intersections --> break;
+                for(Node node:this.getChildren())
+                    if(((Pixel)node).collided())
+                        newBlock(parent,stage);
+            }, new KeyValue(this.translateYProperty(), Main.blocksize));
 
-        },new KeyValue(this.translateYProperty(),Main.blocksize*20));
+            movement.getKeyFrames().add(target);
+            movement.play();
+        }
 
-        movement.getKeyFrames().add(target);
-        movement.play();
 
 
+    }
+
+    public void newBlock(Pane parent, Stage stage){
+        parent.getChildren().add(Main.curr = new Block(stage, parent));
     }
 
     public void move(int movement){

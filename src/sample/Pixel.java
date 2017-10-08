@@ -20,4 +20,7 @@ public class Pixel extends Rectangle{
         this.relocate(this.getLayoutX()+newCol*Main.blocksize,this.getLayoutY()+newRow*Main.blocksize);
     }
 
+    public boolean collided(){
+        return false;
+    }
 }
