@@ -50,7 +50,7 @@ var gameFischrisRotateY = [
     [9, 9, 9],
     [9, 9, 9]
 ];
-var gameFischrisLineVertical = true;
+var gameFischrisLineOrientation = 90;
 
 //Special-Items
 var gameFischrisOnlyLines = false;
@@ -294,7 +294,7 @@ function gameFischrisReset(event) {
         [9, 9, 9],
         [9, 9, 9]
     ];
-    gameFischrisLineVertical = true;
+    gameFischrisLineOrientation = 90;
 
     //Special-Items
     gameFischrisOnlyLines = false;
@@ -324,7 +324,7 @@ function gameFischrisCreateStone(event) {
         [9, 9, 9],
         [9, 9, 9]
     ];
-    gameFischrisLineVertical = true;
+    gameFischrisLineOrientation = 90;
 
     gameFischrisStoneType = Math.floor(Math.random()*7);    //0-6
     if(gameFischrisOnlyLines === true) {
@@ -726,94 +726,183 @@ function gameFischrisRotateLine(event) {
     var blockNumberTMP = gameFischrisBlockNumber;
 
     //Mögliche Rotierung überprüfen
-    if(gameFischrisLineVertical === true) {
-        //1. Block
-        if((gameFischrisBlockX[0]+20)/20 > 9) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[0]-20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]+20)/20][(gameFischrisBlockY[0]-20)/20] === false)) {
-            letRotate = false;
-        }
-
-        //3. Block
-        if((gameFischrisBlockX[2]-20)/20 < 0) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[2]+20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[2]-20)/20][(gameFischrisBlockY[2]+20)/20] === false)) {
-            letRotate = false;
-        }
-
-        //4. Block
-        if((gameFischrisBlockX[3]-40)/20 < 0) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[3]+40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]-40)/20][(gameFischrisBlockY[3]+40)/20] === false)) {
-            letRotate = false;
-        }
-    }
-    else {
-        //1. Block
-        if((gameFischrisBlockX[0]-20)/20 < 0) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[0]+20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]-20)/20][(gameFischrisBlockY[0]+20)/20] === false)) {
-            letRotate = false;
-        }
-
-        //3. Block
-        if((gameFischrisBlockX[2]+20)/20 > 9) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[2]-20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[2]+20)/20][(gameFischrisBlockY[2]-20)/20] === false)) {
-            letRotate = false;
-        }
-
-        //4. Block
-        if((gameFischrisBlockX[3]+40)/20 > 9) {
-            letRotate = false;
-        }
-        else if(!((gameFischrisBlockY[3]-40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]+40)/20][(gameFischrisBlockY[3]-40)/20] === false)) {
-            letRotate = false;
-        }
+    switch(gameFischrisLineOrientation) {
+        case 90:
+            //1. Block
+            if((gameFischrisBlockX[0]+40)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[0]-20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]+40)/20][(gameFischrisBlockY[0]-20)/20] === false)) {
+                letRotate = false;
+            }
+            //2. Block
+            if((gameFischrisBlockX[1]+20)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!(gameFischrisBlockY[1] < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[1]+20)/20][gameFischrisBlockY[1]/20] === false)) {
+                letRotate = false;
+            }
+            //3. Block
+            if(!((gameFischrisBlockY[2]+20) < 380 && gameFischrisBloeckVorhanden[gameFischrisBlockX[2]/20][(gameFischrisBlockY[2]+20)/20] === false)) {
+                letRotate = false;
+            }
+            //4. Block
+            if((gameFischrisBlockX[3]-20)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[3]+40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]-20)/20][(gameFischrisBlockY[3]+40)/20] === false)) {
+                letRotate = false;
+            }
+            break;
+        case 180:
+            //1. Block
+            if((gameFischrisBlockX[0]+20)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[0]+40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]+20)/20][(gameFischrisBlockY[0]+40)/20] === false)) {
+                letRotate = false;
+            }
+            //2. Block
+            if(!((gameFischrisBlockY[1]+20) < 380 && gameFischrisBloeckVorhanden[gameFischrisBlockX[1]/20][(gameFischrisBlockY[1]+20)/20] === false)) {
+                letRotate = false;
+            }
+            //3. Block
+            if((gameFischrisBlockX[2]-20)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!(gameFischrisBlockY[2] < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[2]-20)/20][gameFischrisBlockY[2]/20] === false)) {
+                letRotate = false;
+            }
+            //4. Block
+            if((gameFischrisBlockX[3]-40)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[3]-20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]-40)/20][(gameFischrisBlockY[3]-20)/20] === false)) {
+                letRotate = false;
+            }
+            break;
+        case 270:
+            //1. Block
+            if((gameFischrisBlockX[0]-40)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[0]+20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]-40)/20][(gameFischrisBlockY[0]+20)/20] === false)) {
+                letRotate = false;
+            }
+            //2. Block
+            if((gameFischrisBlockX[1]-20)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!(gameFischrisBlockY[1] < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[1]-20)/20][gameFischrisBlockY[1]/20] === false)) {
+                letRotate = false;
+            }
+            //3. Block
+            if(!((gameFischrisBlockY[2]-20) < 380 && gameFischrisBloeckVorhanden[gameFischrisBlockX[2]/20][(gameFischrisBlockY[2]-20)/20] === false)) {
+                letRotate = false;
+            }
+            //4. Block
+            if((gameFischrisBlockX[3]+20)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[3]-40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]+20)/20][(gameFischrisBlockY[3]-40)/20] === false)) {
+                letRotate = false;
+            }
+            break;
+        case 360:
+            //1. Block
+            if((gameFischrisBlockX[0]-20)/20 < 0) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[0]-40) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[0]-20)/20][(gameFischrisBlockY[0]-40)/20] === false)) {
+                letRotate = false;
+            }
+            //2. Block
+            if(!((gameFischrisBlockY[1]-20) < 380 && gameFischrisBloeckVorhanden[gameFischrisBlockX[1]/20][(gameFischrisBlockY[1]-20)/20] === false)) {
+                letRotate = false;
+            }
+            //3. Block
+            if((gameFischrisBlockX[2]+20)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!(gameFischrisBlockY[2] < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[2]+20)/20][gameFischrisBlockY[2]/20] === false)) {
+                letRotate = false;
+            }
+            //4. Block
+            if((gameFischrisBlockX[3]+40)/20 > 9) {
+                letRotate = false;
+            }
+            else if(!((gameFischrisBlockY[3]+20) < 380 && gameFischrisBloeckVorhanden[(gameFischrisBlockX[3]+40)/20][(gameFischrisBlockY[3]+20)/20] === false)) {
+                letRotate = false;
+            }
+            break;
     }
 
     //Rotierung
     if(letRotate === true) {
-        if(gameFischrisLineVertical === true) {
-            gameFischrisLineVertical = false;
-
-            //1. Block
-            gameFischrisBlockX[0] += 20;
-            gameFischrisBlockY[0] -= 20;
-
-            //3. Block
-            gameFischrisBlockX[2] -= 20;
-            gameFischrisBlockY[2] += 20;
-
-            //4. Block
-            gameFischrisBlockX[3] -= 40;
-            gameFischrisBlockY[3] += 40;
-        }
-        else {
-            gameFischrisLineVertical = true;
-
-            //1. Block
-            gameFischrisBlockX[0] -= 20;
-            gameFischrisBlockY[0] += 20;
-
-            //3. Block
-            gameFischrisBlockX[2] += 20;
-            gameFischrisBlockY[2] -= 20;
-
-            //4. Block
-            gameFischrisBlockX[3] += 40;
-            gameFischrisBlockY[3] -= 40;
+        switch(gameFischrisLineOrientation) {
+            case 90:
+                gameFischrisLineOrientation = 180;
+                //1. Block
+                gameFischrisBlockX[0] += 40;
+                gameFischrisBlockY[0] -= 20;
+                //2. Block
+                gameFischrisBlockX[1] += 20;
+                //3. Block
+                gameFischrisBlockY[2] += 20;
+                //4. Block
+                gameFischrisBlockX[3] -= 20;
+                gameFischrisBlockY[3] += 40;
+                break;
+            case 180:
+                gameFischrisLineOrientation = 270;
+                //1. Block
+                gameFischrisBlockX[0] += 20;
+                gameFischrisBlockY[0] += 40;
+                //2. Block
+                gameFischrisBlockY[1] += 20;
+                //3. Block
+                gameFischrisBlockX[2] -= 20;
+                //4. Block
+                gameFischrisBlockX[3] -= 40;
+                gameFischrisBlockY[3] -= 20;
+                break;
+            case 270:
+                gameFischrisLineOrientation = 360;
+                //1. Block
+                gameFischrisBlockX[0] -= 40;
+                gameFischrisBlockY[0] += 20;
+                //2. Block
+                gameFischrisBlockX[1] -= 20;
+                //3. Block
+                gameFischrisBlockY[2] -= 20;
+                //4. Block
+                gameFischrisBlockX[3] += 20;
+                gameFischrisBlockY[3] -= 40;
+                break;
+            case 360:
+                gameFischrisLineOrientation = 90;
+                //1. Block
+                gameFischrisBlockX[0] -= 20;
+                gameFischrisBlockY[0] -= 40;
+                //2. Block
+                gameFischrisBlockY[1] -= 20;
+                //3. Block
+                gameFischrisBlockX[2] += 20;
+                //4. Block
+                gameFischrisBlockX[3] += 40;
+                gameFischrisBlockY[3] += 20;
+                break;
         }
 
         //1. Block
         blockNumberTMP = gameFischrisBlockNumber-3;
         document.getElementById("block" + blockNumberTMP).style.left = gameFischrisBlockX[0] + "px";
         document.getElementById("block" + blockNumberTMP).style.top = gameFischrisBlockY[0] + "px";
+
+        //2. Block
+        blockNumberTMP = gameFischrisBlockNumber-2;
+        document.getElementById("block" + blockNumberTMP).style.left = gameFischrisBlockX[1] + "px";
+        document.getElementById("block" + blockNumberTMP).style.top = gameFischrisBlockY[1] + "px";
 
         //3. Block
         blockNumberTMP = gameFischrisBlockNumber-1;
@@ -926,52 +1015,34 @@ function gameFischrisRotate3x3(event) {
                         case "01":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] += 20;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] -= 20;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "10":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] += 20;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] += 20;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "21":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] -= 20;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] += 20;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "12":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] -= 20;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] -= 20;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "00":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] += 40;
-                            // gameFischrisBlockY[gameFischrisRotateY[i][j]] += 0;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            // document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "20":
-                            // gameFischrisBlockX[gameFischrisRotateX[i][j]] += 0;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] += 40;
-                            // document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "22":
                             gameFischrisBlockX[gameFischrisRotateX[i][j]] -= 40;
-                            // gameFischrisBlockY[gameFischrisRotateY[i][j]] += 0;
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            // document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                         case "02":
-                            // gameFischrisBlockX[gameFischrisRotateX[i][j]] += 0;
                             gameFischrisBlockY[gameFischrisRotateY[i][j]] -= 40;
-                            // document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
-                            document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                             break;
                     }
+                    document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.left = gameFischrisBlockX[gameFischrisRotateX[i][j]] + "px";
+                    document.getElementById("block" + gameFischrisRotateBlocknumbers[i][j]).style.top = gameFischrisBlockY[gameFischrisRotateY[i][j]] + "px";
                 }
             }
         }
