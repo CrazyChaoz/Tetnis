@@ -1,22 +1,12 @@
 package sample;
 
 
-import javafx.animation.Animation;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.event.EventType;
 import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 import java.util.Random;
 
@@ -33,11 +23,10 @@ public class Block extends Pane {
     //static IntegerProperty score=new SimpleIntegerProperty(0);
     //static BooleanBinding isGameOver=lives.isEqualTo(0);
     //static IntegerBinding level=score.divide(5).add(1);
-    static BooleanBinding collision=null;
 
     public Block(Stage stage,Pane parent) {
         super();
-        int i=1;//(rnd.nextInt(50)%3);
+        int i=rnd.nextInt(3);
         switch (i){
             case 0:
                 shape=0;
@@ -72,27 +61,23 @@ public class Block extends Pane {
         }
 
 
-        while(true){
-            Task<Void> sleeper = new Task<Void>() {
-                @Override
-                protected Void call() throws Exception {
-                    try {
-                        Thread.sleep(20);
-                    } catch (InterruptedException e) {
-                    }
-                    return null;
+        Task<Void> sleeper = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                int i=0;
+                while(i<20){
+                    i++;
+                    Platform.runLater(()->Main.curr_this.move(2));
+                    Thread.sleep(100);
                 }
-            };
-            sleeper.setOnSucceeded(event -> {this.move(1);});
-            new Thread(sleeper).start();
-        }
+                return null;
+            }
+        };
+        new Thread(sleeper).start();
 
 
 
-    }
 
-    public void newBlock(Pane parent, Stage stage){
-        parent.getChildren().add(Main.curr = new Block(stage, parent));
     }
 
     public void move(int movement){
@@ -154,52 +139,54 @@ public class Block extends Pane {
                 }
                 break;
             case 1:
+
+                break;
+            case 2:
                 switch(shape){
                     case 0:
                         //4 pixel stab - liegend->stehend
                         System.out.println(shape);
-                        for(int i=0;i<3;i++)
+                        for(int i=0;i<4;i++)
                             ((Pixel)this.getChildren().get(i)).move(0,1);
 
                         break;
                     case 1:
                         //quadrat - 1 pixel
                         System.out.println(shape);
-                        for(int i=0;i<2;i++)
+                        for(int i=0;i<3;i++)
                             ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
 
                     case 10:
                         //4 pixel stab - stehend->liegend
                         System.out.println(shape);
-                        for(int i=0;i<3;i++)
-                            ((Pixel)this.getChildren().get(i)).move(1,0);
+                        for(int i=0;i<4;i++)
+                            ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
                     case 11:
                         //quadrat - 1 pixel
                         System.out.println(shape);
-                        for(int i=0;i<2;i++)
+                        for(int i=0;i<3;i++)
                             ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
                     case 12:
                         //quadrat - 1 pixel
                         System.out.println(shape);
-                        for(int i=0;i<2;i++)
+                        for(int i=0;i<3;i++)
                             ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
                     case 13:
                         //quadrat - 1 pixel
                         System.out.println(shape);
-                        for(int i=0;i<2;i++)
+                        for(int i=0;i<3;i++)
                             ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
                     case 99:
                         //quadrat - lol
-                        System.out.println("turn around  baby");
+                        for(int i=0;i<4;i++)
+                            ((Pixel)this.getChildren().get(i)).move(0,1);
                         break;
                 }
-                break;
-            case 2:
                 break;
             case 3:
                 break;
