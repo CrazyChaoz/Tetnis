@@ -1,6 +1,10 @@
 package sample;
 
 
+import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
+import javafx.geometry.Point3D;
+import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
@@ -20,7 +24,7 @@ public class Pixel extends Rectangle{
         this.relocate(this.getLayoutX()+newCol*Main.blocksize,this.getLayoutY()+newRow*Main.blocksize);
     }
 
-    public boolean collided(){
-        return false;
+    public boolean collided(Node other){
+        return this.getBoundsInLocal().intersects(other.getBoundsInLocal());
     }
 }

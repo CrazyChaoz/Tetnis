@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.beans.binding.BooleanBinding;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
@@ -59,24 +60,6 @@ public class Block extends Pane {
                 break;
 
         }
-
-
-        Task<Void> sleeper = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                int i=0;
-                while(i<20){
-                    i++;
-                    Platform.runLater(()->Main.curr_this.move(2));
-                    Thread.sleep(100);
-                }
-                return null;
-            }
-        };
-        new Thread(sleeper).start();
-
-
-
 
     }
 
@@ -191,6 +174,16 @@ public class Block extends Pane {
             case 3:
                 break;
         }
+    }
+
+    public boolean checkIntersection(){
+        for(Node node:Main.curr_this.getChildren()) {
+            System.out.println(((Pixel) node).getBoundsInLocal());
+            System.out.println(Main.bottom.getBoundsInLocal());
+            if (((Pixel) node).getBoundsInLocal().intersects(Main.bottom.getBoundsInLocal()))
+                return true;
+        }
+        return false;
     }
 
     public void rip(Group parent){
