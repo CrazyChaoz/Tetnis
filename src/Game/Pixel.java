@@ -5,14 +5,15 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 
+
 public class Pixel extends Rectangle{
     int col;
 
-    public Pixel(int colInit,int rowInit){
+    public Pixel(int colInit,int rowInit, Color color){
         super(Game.BLOCKSIZE,Game.BLOCKSIZE);
         col=colInit;
 
-        this.setFill(Color.LIGHTBLUE);
+        this.setFill(color);
         this.relocate(colInit*Game.BLOCKSIZE+Game.BLOCKSIZE,rowInit*Game.BLOCKSIZE);
     }
 

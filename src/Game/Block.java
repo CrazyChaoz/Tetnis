@@ -1,9 +1,13 @@
 package Game;
 
 
+import javafx.beans.property.IntegerProperty;
+import javafx.beans.property.SimpleIntegerProperty;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
@@ -11,12 +15,20 @@ import java.util.Random;
 
 
 /**
- * Created by testuser on 01.06.2017.
+ *
+ * Idea
+ * make static blocks, move them to nowhere, activate them when necessary
+ *
  */
+
+
+
 public class Block extends Pane {
     private boolean collided;
     private int shape;
     private static final Random rnd=new Random();
+
+    public IntegerProperty killedLines=new SimpleIntegerProperty(0);
 
     public boolean isCollided(){
         return collided;
@@ -25,31 +37,33 @@ public class Block extends Pane {
     public Block(Stage stage) {
         super();
         collided=false;
+        Color c=Color.color(Math.random(),Math.random(),Math.random());
+
         int i=rnd.nextInt(3);
         switch (i){
             case 0:
                 shape=0;
-                this.getChildren().add(new Pixel(3,1));
-                this.getChildren().add(new Pixel(4,1));
-                this.getChildren().add(new Pixel(5,1));
-                this.getChildren().add(new Pixel(6,1));
+                this.getChildren().add(new Pixel(3,1,c));
+                this.getChildren().add(new Pixel(4,1,c));
+                this.getChildren().add(new Pixel(5,1,c));
+                this.getChildren().add(new Pixel(6,1,c));
                 stage.show();
                 System.out.println(shape);
                 break;
             case 1:
                 shape=1;
-                this.getChildren().add(new Pixel(4,0));
-                this.getChildren().add(new Pixel(5,0));
-                this.getChildren().add(new Pixel(4,1));
+                this.getChildren().add(new Pixel(4,0,c));
+                this.getChildren().add(new Pixel(5,0,c));
+                this.getChildren().add(new Pixel(4,1,c));
                 stage.show();
                 System.out.println(shape);
                 break;
             case 2:
                 shape=99;
-                this.getChildren().add(new Pixel(4,0));
-                this.getChildren().add(new Pixel(4,1));
-                this.getChildren().add(new Pixel(5,0));
-                this.getChildren().add(new Pixel(5,1));
+                this.getChildren().add(new Pixel(4,0,c));
+                this.getChildren().add(new Pixel(4,1,c));
+                this.getChildren().add(new Pixel(5,0,c));
+                this.getChildren().add(new Pixel(5,1,c));
                 stage.show();
                 System.out.println(shape);
                 break;
@@ -153,4 +167,40 @@ public class Block extends Pane {
 
         return false;
     }
+
+    //10 verschiedene automatisch generierte rechtecke, 22 mal
+    /*
+    public static void TEST(){
+        RectangleBuilder.create().x(-100).y(-100).width(200).height(200);
+        Shape intersect = Shape.intersect((Rectangle)pixel,
+        if (intersect.getBoundsInLocal().getWidth() != -1) {
+            System.out.println("Tadaaaaaaa");
+        }
+    }
+    public void lineRM(){
+        Pane killer=new Pane(new Rectangle(Game.BLOCKSIZE,Game.BLOCKSIZE));
+        int i=0;
+        int i1;
+        int i2;
+        for(i1=0;i1<=22;i1++){
+            for(i2=0;i2<=10;i2++){
+                Shape intersect = Shape.intersect((Rectangle)pixel, RectangleBuilder.create().x(-100).y(-100)
+                        .width(200)
+                        .height(200));
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
+                    break;
+                }
+            }
+            if(i2==10)
+                i++;
+        }
+
+        for(Node pixel:killer.getChildren())
+            for (Node node:killer.getChildren()){
+                Shape intersect = Shape.intersect((Rectangle)pixel, (Rectangle)node );
+                if (intersect.getBoundsInLocal().getWidth() != -1) {
+
+                }
+            }
+    }*/
 }

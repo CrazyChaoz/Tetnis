@@ -24,15 +24,13 @@ public class Game extends Application {
         Pane parent=new Pane();
         //Links und rechts Wand
         Rectangle left=new Rectangle(BLOCKSIZE,BLOCKSIZE*20);
-        Rectangle bottom=new Rectangle(BLOCKSIZE*10+BLOCKSIZE,BLOCKSIZE);
+        Rectangle bottom=new Rectangle(BLOCKSIZE*10+BLOCKSIZE*2,BLOCKSIZE);
         Rectangle right=new Rectangle(BLOCKSIZE,BLOCKSIZE*20);
         left.relocate(BLOCKSIZE,0);
-        right.relocate(BLOCKSIZE+BLOCKSIZE*10,0);
+        right.relocate(BLOCKSIZE*2+BLOCKSIZE*10,0);
         bottom.relocate(BLOCKSIZE,BLOCKSIZE*20);
 
-        gamescreen.getChildren().addAll(
-                left,right,bottom
-        );
+        gamescreen.getChildren().addAll(left,right,bottom);
 
         Task<Void> runner_this = new Task<Void>() {
             @Override
@@ -65,7 +63,7 @@ public class Game extends Application {
 
         parent.getChildren().add(gamescreen);
 
-        Scene scene=new Scene(parent, Game.BLOCKSIZE*10+Game.BLOCKSIZE*3, Game.BLOCKSIZE*22);
+        Scene scene=new Scene(parent, Game.BLOCKSIZE*10+Game.BLOCKSIZE*4, Game.BLOCKSIZE*22);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             switch (key.getCode()){
                 case Q:
@@ -76,6 +74,7 @@ public class Game extends Application {
                     break;
                 case S:
                     curr_this.move(2,gamescreen);
+                    break;
                 case A:
                     curr_this.move(3,gamescreen);
                     break;
@@ -86,7 +85,7 @@ public class Game extends Application {
         });
 
 
-        stage.setTitle("Hello World");
+        stage.setTitle("Tetnis");
         stage.setScene(scene);
         stage.show();
     }
