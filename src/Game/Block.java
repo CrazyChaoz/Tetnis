@@ -3,6 +3,7 @@ package Game;
 
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -27,8 +28,14 @@ public class Block extends Pane {
     private boolean collided;
     private int shape;
     private static final Random rnd=new Random();
+    private static Group killer;
 
     public IntegerProperty killedLines=new SimpleIntegerProperty(0);
+
+    static {
+        for(int i=0;i<10;i++)
+            killer.getChildren().add(new Rectangle(i*Game.BLOCKSIZE+Game.BLOCKSIZE*2,-Game.BLOCKSIZE,Game.BLOCKSIZE,Game.BLOCKSIZE));
+    }
 
     public boolean isCollided(){
         return collided;
@@ -169,21 +176,18 @@ public class Block extends Pane {
     }
 
     //10 verschiedene automatisch generierte rechtecke, 22 mal
-    /*
-    public static void TEST(){
-        RectangleBuilder.create().x(-100).y(-100).width(200).height(200);
-        Shape intersect = Shape.intersect((Rectangle)pixel,
-        if (intersect.getBoundsInLocal().getWidth() != -1) {
-            System.out.println("Tadaaaaaaa");
-        }
-    }
+
     public void lineRM(){
-        Pane killer=new Pane(new Rectangle(Game.BLOCKSIZE,Game.BLOCKSIZE));
         int i=0;
         int i1;
         int i2;
         for(i1=0;i1<=22;i1++){
+            for(Node node:killer.getChildren())
+                ((Rectangle)node).relocate(((Rectangle)node).getX(),((Rectangle)node).getY()-Game.BLOCKSIZE);
+
             for(i2=0;i2<=10;i2++){
+                for(Node node:killer.getChildren())
+                    ((Rectangle)node).relocate(((Rectangle)node).getX(),((Rectangle)node).getY()-Game.BLOCKSIZE);
                 Shape intersect = Shape.intersect((Rectangle)pixel, RectangleBuilder.create().x(-100).y(-100)
                         .width(200)
                         .height(200));
@@ -202,5 +206,5 @@ public class Block extends Pane {
 
                 }
             }
-    }*/
+    }
 }
