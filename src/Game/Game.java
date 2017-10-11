@@ -3,6 +3,7 @@ package Game;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
@@ -15,7 +16,7 @@ public class Game extends Application {
 
     public Block curr_this;
     public Block curr_other;
-    public static Pane gamescreen=new Pane();
+    public static Group gamescreen=new Group();
 
     @Override
     public void start(Stage stage) throws Exception{
@@ -46,6 +47,7 @@ public class Game extends Application {
                         curr_this.move(2,gamescreen);
                         if(curr_this.isCollided()){
                             gamescreen.getChildren().addAll(curr_this.getChildren());
+                            Block.lineRM(gamescreen);
                             curr_this=new Block(stage);
                             parent.getChildren().remove(1);
                             parent.getChildren().add(curr_this);

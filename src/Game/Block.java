@@ -8,7 +8,6 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.RectangleBuilder;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 
@@ -28,14 +27,10 @@ public class Block extends Pane {
     private boolean collided;
     private int shape;
     private static final Random rnd=new Random();
-    private static Group killer;
 
     public IntegerProperty killedLines=new SimpleIntegerProperty(0);
 
-    static {
-        for(int i=0;i<10;i++)
-            killer.getChildren().add(new Rectangle(i*Game.BLOCKSIZE+Game.BLOCKSIZE*2,-Game.BLOCKSIZE,Game.BLOCKSIZE,Game.BLOCKSIZE));
-    }
+
 
     public boolean isCollided(){
         return collided;
@@ -82,7 +77,7 @@ public class Block extends Pane {
 
     }
 
-    public void move(int movement,Pane gamescreen){
+    public void move(int movement,Group gamescreen){
 
         switch(movement){
             case 0:
@@ -163,7 +158,7 @@ public class Block extends Pane {
         }
     }
 
-    public boolean checkIntersection(Pane other){
+    public boolean checkIntersection(Group other){
         for (Node pixel:this.getChildren())
             for (Node node:other.getChildren()){
                 Shape intersect = Shape.intersect((Rectangle)pixel, (Rectangle)node );
@@ -177,34 +172,31 @@ public class Block extends Pane {
 
     //10 verschiedene automatisch generierte rechtecke, 22 mal
 
-    public void lineRM(){
+    public static void lineRM(Group gamescreen){
+        Rectangle killer=new Rectangle(Game.BLOCKSIZE,Game.BLOCKSIZE);
+        gamescreen.getChildren().add(killer);
+
+        killer.relocate(Game.BLOCKSIZE*2+Game.BLOCKSIZE*0,Game.BLOCKSIZE*0);
         int i=0;
         int i1;
         int i2;
+        int i3;
         for(i1=0;i1<=22;i1++){
-            for(Node node:killer.getChildren())
-                ((Rectangle)node).relocate(((Rectangle)node).getX(),((Rectangle)node).getY()-Game.BLOCKSIZE);
-
-            for(i2=0;i2<=10;i2++){
-                for(Node node:killer.getChildren())
-                    ((Rectangle)node).relocate(((Rectangle)node).getX(),((Rectangle)node).getY()-Game.BLOCKSIZE);
-                Shape intersect = Shape.intersect((Rectangle)pixel, RectangleBuilder.create().x(-100).y(-100)
-                        .width(200)
-                        .height(200));
-                if (intersect.getBoundsInLocal().getWidth() != -1) {
-                    break;
+            i3=0;
+            for(i2=0;i2<10;i2++){
+                killer.relocate(Game.BLOCKSIZE*2+Game.BLOCKSIZE*i1,Game.BLOCKSIZE*i2);
+                for (Node node:gamescreen.getChildren()){
+                    Shape intersect = Shape.intersect((Rectangle)node, killer);
+                    if (intersect.getBoundsInLocal().getWidth() != -1) {
+                        i3++;
+                    }
                 }
             }
-            if(i2==10)
+            if(i3==10)
                 i++;
         }
-
-        for(Node pixel:killer.getChildren())
-            for (Node node:killer.getChildren()){
-                Shape intersect = Shape.intersect((Rectangle)pixel, (Rectangle)node );
-                if (intersect.getBoundsInLocal().getWidth() != -1) {
-
-                }
-            }
+        System.out.println("Removed lines: "+i);
+        //killedLines.add(i*i);
+        //gamescreen.getChildren().remove(killer);
     }
 }
