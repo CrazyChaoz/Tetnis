@@ -7,8 +7,10 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Game extends Application {
     public static final int BLOCKSIZE=32;
@@ -21,6 +23,8 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"))
+
+        stage.initStyle(StageStyle.TRANSPARENT);
 
         Pane parent=new Pane();
         //Links und rechts Wand
@@ -47,7 +51,8 @@ public class Game extends Application {
                         curr_this.move(2,gamescreen);
                         if(curr_this.isCollided()){
                             gamescreen.getChildren().addAll(curr_this.getChildren());
-                            Block.lineRM(gamescreen);
+                            //Block.lineRM(gamescreen);
+                            gamescreen.getChildren().remove(5);
                             curr_this=new Block(stage);
                             parent.getChildren().remove(1);
                             parent.getChildren().add(curr_this);
@@ -66,6 +71,8 @@ public class Game extends Application {
         parent.getChildren().add(gamescreen);
 
         Scene scene=new Scene(parent, Game.BLOCKSIZE*10+Game.BLOCKSIZE*4, Game.BLOCKSIZE*22);
+
+        scene.setFill(Color.TRANSPARENT);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
             switch (key.getCode()){
                 case Q:
