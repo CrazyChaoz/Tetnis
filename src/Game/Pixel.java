@@ -7,17 +7,18 @@ import javafx.scene.shape.Rectangle;
 
 
 public class Pixel extends Rectangle{
-    int col;
+    double col,row;
 
-    public Pixel(int colInit,int rowInit, Color color){
+    public Pixel(double colInit,double rowInit, Color color){
         super(Game.BLOCKSIZE,Game.BLOCKSIZE);
         col=colInit;
-
-        this.setFill(color);
         this.relocate(colInit*Game.BLOCKSIZE+Game.BLOCKSIZE,rowInit*Game.BLOCKSIZE);
+        this.setFill(color);
     }
 
     public void move(int newCol,int newRow){
-        this.relocate(this.getLayoutX()+newCol*Game.BLOCKSIZE,this.getLayoutY()+newRow*Game.BLOCKSIZE);
+        col=(this.getLayoutX()+newCol*Game.BLOCKSIZE);
+        row=(this.getLayoutY()+newRow*Game.BLOCKSIZE);
+        this.relocate(col,row);
     }
 }
