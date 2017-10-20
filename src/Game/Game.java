@@ -28,6 +28,7 @@ public class Game extends Application {
     @Override
     public void start(Stage stage) throws Exception{
         //Parent root = FXMLLoader.load(getClass().getResource("sample.fxml"))
+        
 
         stage.initStyle(StageStyle.TRANSPARENT);
 
@@ -117,7 +118,15 @@ public class Game extends Application {
             punkte.setText("Punkte: " + killedLines.get());
 
         });
-
+        
+        //#####################
+        //#####################
+        //Für Cedric        
+        //#####################
+        //scene.getStylesheets().add(this.getClass().getResource("skin.css").toExternalForm());
+        //#####################
+        //#####################
+        
         stage.setTitle("Tetnis");
         stage.setScene(scene);
         stage.show();
