@@ -4,20 +4,14 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.concurrent.Task;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -43,8 +37,6 @@ public class Game extends Application {
         Rectangle bottom=new Rectangle(BLOCKSIZE*10+BLOCKSIZE*2,BLOCKSIZE);
         Rectangle right=new Rectangle(BLOCKSIZE,BLOCKSIZE*20);
         left.relocate(BLOCKSIZE,0);
-
-        System.out.println(System.getProperty("user.dir"));
         right.relocate(BLOCKSIZE*2+BLOCKSIZE*10,0);
         bottom.relocate(BLOCKSIZE,BLOCKSIZE*20);
 
@@ -69,7 +61,7 @@ public class Game extends Application {
 
                             //#########
                             int val=Block.lineRM(gamescreen);
-                            killedLines.set(killedLines.get()+val*val);
+                            killedLines.set(killedLines.get()+val+val);
                             //#########
 
                             curr_this=new Block(stage);
@@ -92,7 +84,7 @@ public class Game extends Application {
         parent.getChildren().add(gamescreen);
         Label punkte=new Label("Punkte: 0");
         punkte.relocate(Game.BLOCKSIZE,Game.BLOCKSIZE*21);
-        punkte.setStyle("-fx-font-size:1.2em;-fx-background-color: blueviolet");
+        punkte.setStyle("-fx-font-size:1.2em;-fx-font-weight:bold;-fx-background-color: blueviolet");
         Group obergruppe=new Group(parent,punkte);
 
         Scene scene=new Scene(obergruppe, Game.BLOCKSIZE*10+Game.BLOCKSIZE*4, Game.BLOCKSIZE*22);
