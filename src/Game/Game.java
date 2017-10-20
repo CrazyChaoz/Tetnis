@@ -1,6 +1,5 @@
 package Game;
 
-import com.sun.org.apache.regexp.internal.RE;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.IntegerProperty;
@@ -12,18 +11,16 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.NoSuchElementException;
 
 public class Game extends Application {
     public static final int BLOCKSIZE=32;
@@ -46,6 +43,8 @@ public class Game extends Application {
         Rectangle bottom=new Rectangle(BLOCKSIZE*10+BLOCKSIZE*2,BLOCKSIZE);
         Rectangle right=new Rectangle(BLOCKSIZE,BLOCKSIZE*20);
         left.relocate(BLOCKSIZE,0);
+
+        System.out.println(System.getProperty("user.dir"));
         right.relocate(BLOCKSIZE*2+BLOCKSIZE*10,0);
         bottom.relocate(BLOCKSIZE,BLOCKSIZE*20);
 
