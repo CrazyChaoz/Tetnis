@@ -48,7 +48,7 @@ public class Game extends Application {
             protected Void call() throws Exception {
 
                 Platform.runLater(()->{
-                    curr_this=new Block(stage);
+                    curr_this=new Block(true);
                     Block.updateGhostBlock(curr_this,gamescreen);
                     parent.getChildren().addAll(curr_this);
                 });
@@ -65,7 +65,7 @@ public class Game extends Application {
                             killedLines.set(killedLines.get()+val+val);
                             //#########
 
-                            curr_this=new Block(stage);
+                            curr_this=new Block(true);
                             parent.getChildren().remove(1);
                             parent.getChildren().addAll(curr_this);
 

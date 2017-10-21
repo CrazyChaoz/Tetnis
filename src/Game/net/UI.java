@@ -19,14 +19,13 @@ import javafx.stage.StageStyle;
 
 import java.util.Scanner;
 
+import static Game.net.Worker.*;
+
 public class UI extends Application{
     public static final int BLOCKSIZE=32;
 
 
-    public Block curr_this;
-    public Block curr_other;
-    public Group gamescreen=new Group();
-    public IntegerProperty killedLines=new SimpleIntegerProperty(0);
+
 
 
     public static void main(String[] args) {
@@ -62,54 +61,26 @@ public class UI extends Application{
         right.relocate(BLOCKSIZE * 2 + BLOCKSIZE * 10, 0);
         bottom.relocate(BLOCKSIZE, BLOCKSIZE * 20);
 
-        gamescreen.getChildren().addAll(left, right, bottom);
+        Rectangle other_left = new Rectangle(BLOCKSIZE, BLOCKSIZE * 20);
+        Rectangle other_bottom = new Rectangle(BLOCKSIZE * 10 + BLOCKSIZE * 2, BLOCKSIZE);
+        Rectangle other_right = new Rectangle(BLOCKSIZE, BLOCKSIZE * 20);
+        other_left.relocate(BLOCKSIZE*14, 0);
+        other_right.relocate(BLOCKSIZE * 2 + BLOCKSIZE * 23, 0);
+        other_bottom.relocate(BLOCKSIZE*14, BLOCKSIZE * 20);
 
-        Task<Void> runner_this = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
+        gamescreen.getChildren().addAll(left, right, bottom,other_bottom,other_left,other_right);
 
-                Platform.runLater(() -> {
-                    curr_this = new Block(stage);
-                    Block.updateGhostBlock(curr_this, gamescreen);
-                    parent.getChildren().addAll(curr_this);
-                });
 
-                while (true) {
-                    Platform.runLater(() -> {
-                        curr_this.move(2, gamescreen);
-                        Block.updateGhostBlock(curr_this, gamescreen);
-                        if (curr_this.isCollided()) {
-                            gamescreen.getChildren().addAll(curr_this.getChildren());
+        new Thread(Worker.getLocalGame()).start();
 
-                            //#########
-                            int val = Block.lineRM(gamescreen);
-                            killedLines.set(killedLines.get() + val + val);
-                            //#########
 
-                            curr_this = new Block(stage);
-                            parent.getChildren().remove(1);
-                            parent.getChildren().addAll(curr_this);
-
-//                            Block.updateGhostBlock(curr_this,gamescreen);
-                            if (curr_this.checkIntersection(gamescreen)) {
-                                System.out.println("Game Over");
-                                System.exit(0);
-                            }
-                        }
-                    });
-                    Thread.sleep(250);
-                }
-            }
-        };
-        new Thread(runner_this).start();
-
-        parent.getChildren().add(gamescreen);
+//        parent.getChildren().add(gamescreen);
         Label punkte = new Label("Punkte: 0");
         punkte.relocate(Game.BLOCKSIZE, Game.BLOCKSIZE * 21);
         punkte.setStyle("-fx-font-size:1.2em;-fx-font-weight:bold;-fx-background-color: blueviolet");
-        Group obergruppe = new Group(parent, punkte);
+        Group obergruppe = new Group(gamescreen, punkte);
 
-        Scene scene = new Scene(obergruppe, Game.BLOCKSIZE * 10 + Game.BLOCKSIZE * 4, Game.BLOCKSIZE * 22);
+        Scene scene = new Scene(obergruppe, Game.BLOCKSIZE * 23 + Game.BLOCKSIZE * 4, Game.BLOCKSIZE * 22);
 
         scene.setFill(Color.TRANSPARENT);
         scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {

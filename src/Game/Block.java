@@ -26,12 +26,13 @@ public class Block extends Pane {
         return collided;
     }
 
-    public Block(Stage stage) {
+    public Block(boolean isLocal) {
         super();
         collided = false;
         Color c = Color.color(Math.random(), Math.random(), Math.random());
 
         int i = rnd.nextInt(3);
+
         switch (i) {
             case 0:
                 shape = 0;
@@ -39,7 +40,6 @@ public class Block extends Pane {
                 this.getChildren().add(new Pixel(5, 1, c));
                 this.getChildren().add(new Pixel(6, 1, c));
                 this.getChildren().add(new Pixel(7, 1, c));
-                stage.show();
                 System.out.println(shape);
                 break;
             case 1:
@@ -47,7 +47,7 @@ public class Block extends Pane {
                 this.getChildren().add(new Pixel(4, 0, c));
                 this.getChildren().add(new Pixel(5, 0, c));
                 this.getChildren().add(new Pixel(4, 1, c));
-                stage.show();
+
                 System.out.println(shape);
                 break;
             case 2:
@@ -56,7 +56,7 @@ public class Block extends Pane {
                 this.getChildren().add(new Pixel(4, 1, c));
                 this.getChildren().add(new Pixel(5, 0, c));
                 this.getChildren().add(new Pixel(5, 1, c));
-                stage.show();
+
                 System.out.println(shape);
                 break;
             default:
@@ -189,6 +189,8 @@ public class Block extends Pane {
         try {
             for (Node pixel : this.getChildren())
                 for (Node node : other.getChildren()) {
+                    if(node.getClass()==Block.class)
+                        continue;
                     Shape intersect = Shape.intersect((Rectangle) pixel, (Rectangle) node);
                     if (intersect.getBoundsInLocal().getWidth() != -1) {
                         return true;
@@ -202,14 +204,14 @@ public class Block extends Pane {
 
     public static void updateGhostBlock(Block current,Group gamescreen){
         if(ghostBlock!=null) {
-            ((Pane)gamescreen.getParent()).getChildren().remove(ghostBlock);
+            gamescreen.getChildren().remove(ghostBlock);
         }
 
         ghostBlock=new Block(current);
 
         while(ghostBlock.move(2,gamescreen)){}
 
-        ((Pane)gamescreen.getParent()).getChildren().add(ghostBlock);
+        gamescreen.getChildren().add(ghostBlock);
 
     }
 
@@ -228,7 +230,7 @@ public class Block extends Pane {
             for (i2 = 0; i2 < 10; i2++) {
                 killer.relocate(Game.BLOCKSIZE * 2 + Game.BLOCKSIZE * i2, Game.BLOCKSIZE * i1);
                 for (Node node:gamescreen.getChildren()){
-                    if(node!=killer){
+                    if(node!=killer&&node.getClass()!=Block.class){
                         Shape intersect = Shape.intersect((Rectangle)node, killer);
                         if (intersect.getBoundsInLocal().getWidth() != -1) {
                             i3++;
