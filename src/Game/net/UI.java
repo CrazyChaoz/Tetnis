@@ -72,6 +72,7 @@ public class UI extends Application{
 
 
         new Thread(Worker.getLocalGame()).start();
+        new Thread(Worker.getOtherGame()).start();
 
 
 //        parent.getChildren().add(gamescreen);
