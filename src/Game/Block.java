@@ -84,7 +84,6 @@ public class Block extends Pane {
         collided = false;
         Color c = Color.gray(0.3961, 0.3373);
         for (Node node : current.getChildren()){
-            System.out.println(((Pixel)node).col+","+((Pixel)node).row);
             getChildren().add(new Pixel(((Pixel)node).col/Game.BLOCKSIZE-1, (((Pixel)node).row/Game.BLOCKSIZE), c));}
 
 
@@ -159,11 +158,11 @@ public class Block extends Pane {
                 break;
             case 2:
                 for (Node pixel : this.getChildren())
-                    ((Pixel) pixel).move(0, 1);
+                    ((Pixel) pixel).move(0, 0.5);
                 if (checkIntersection(gamescreen)) {
                     collided = true;
                     for (Node pixel : this.getChildren())
-                        ((Pixel) pixel).move(0, -1);
+                        ((Pixel) pixel).move(0, -0.5);
                     return false;
                 }
                 break;
@@ -241,7 +240,6 @@ public class Block extends Pane {
                 //X:Game.BLOCKSIZE*2+Game.BLOCKSIZE*i2
                 //Y:Game.BLOCKSIZE*i1
                 removeLines.add(Game.BLOCKSIZE*i1+0.0);
-                System.out.println("#####"+(Game.BLOCKSIZE*i1+0.0));
                 i++;
             }
         }

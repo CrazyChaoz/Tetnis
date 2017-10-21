@@ -4,7 +4,14 @@ package Game;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
+/*
+API:
 
+    move:
+    wanted Column
+    wanted Row
+
+ */
 
 public class Pixel extends Rectangle{
     double col,row;
@@ -16,7 +23,7 @@ public class Pixel extends Rectangle{
         this.setFill(color);
     }
 
-    public void move(int newCol,int newRow){
+    public void move(double newCol,double newRow){
         col=(this.getLayoutX()+newCol*Game.BLOCKSIZE);
         row=(this.getLayoutY()+newRow*Game.BLOCKSIZE);
         this.relocate(col,row);
